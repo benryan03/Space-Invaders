@@ -1,0 +1,42 @@
+body {
+	background-color: lightgray;
+	vertical-align: middle;
+}
+
+/*
+#score {
+	font-size: 36pt;
+	font-family: Arial, Helvetica, sans-serif;
+	float: left;
+}
+
+#lives {
+	font-size: 36pt;
+	float: right;
+	font-family: Arial, Helvetica, sans-serif;
+}
+*/
+
+
+canvas {
+	border:1px solid red;
+	background-color: black;
+}
+
+#main {
+	overflow: auto;
+	width: 802;
+	font-size: 48pt;
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+/*
+#instructions {
+	font-size: 24pt;
+	font-family: Arial, Helvetica, sans-serif;
+}
+*/
+
+#player {
+	display: none;
+}
