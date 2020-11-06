@@ -38,7 +38,7 @@ function fireMissile(){
 function drawMissile(){
 	missiles.forEach(x => {
 		ctx.beginPath();
-		ctx.arc(x[0], x[1], missileSize, 0, Math.PI * 2);
+		ctx.arc(x[0], x[1], missileRadius, 0, Math.PI * 2);
 		ctx.stroke();
 		ctx.fillStyle = "green";
 		ctx.fill();
