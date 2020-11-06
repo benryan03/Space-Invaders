@@ -1,11 +1,12 @@
 var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext("2d");
 const playerImage = document.getElementById("player");
+const enemy1Image = document.getElementById("enemy1");
 
 const player = {
 	w: 80,
 	h: 60,
-	x: 300,
+	x: 5,
 	y: 740,
 	speed: 10,
 	dx: 0,
@@ -46,101 +47,23 @@ function drawMissile(){
 	
 }
 
-/*
-var blocks = [
 
-	// [w, h, x, y, visible]
+var enemies = [
 
-	// Top row
-	[95, 20, 005, 5, true, "red"],
-	[95, 20, 105, 5, true, "red"],
-	[95, 20, 205, 5, true, "red"],
-	[95, 20, 305, 5, true, "red"],
-	[95, 20, 405, 5, true, "red"],
-	[95, 20, 505, 5, true, "red"],
-	[95, 20, 605, 5, true, "red"],
-	[90, 20, 705, 5, true, "red"],
+	// [x, y, w, h, visible]
+	[5, 5, 65, 48, true],
+	[75, 5, 65, 48, true],
+	[145, 5, 65, 48, true],
+	[215, 5, 65, 48, true],
+	[285, 5, 65, 48, true],
 
-	// Row 2
-	[95, 20, 005, 30, true, "red"],
-	[95, 20, 105, 30, true, "red"],
-	[95, 20, 205, 30, true, "red"],
-	[95, 20, 305, 30, true, "red"],
-	[95, 20, 405, 30, true, "red"],
-	[95, 20, 505, 30, true, "red"],
-	[95, 20, 605, 30, true, "red"],
-	[90, 20, 705, 30, true, "red"],
-
-	// Row 3
-	[95, 20, 005, 55, true, "orange"],
-	[95, 20, 105, 55, true, "orange"],
-	[95, 20, 205, 55, true, "orange"],
-	[95, 20, 305, 55, true, "orange"],
-	[95, 20, 405, 55, true, "orange"],
-	[95, 20, 505, 55, true, "orange"],
-	[95, 20, 605, 55, true, "orange"],
-	[90, 20, 705, 55, true, "orange"],
-
-	// Row 4
-	[95, 20, 005, 80, true, "orange"],
-	[95, 20, 105, 80, true, "orange"],
-	[95, 20, 205, 80, true, "orange"],
-	[95, 20, 305, 80, true, "orange"],
-	[95, 20, 405, 80, true, "orange"],
-	[95, 20, 505, 80, true, "orange"],
-	[95, 20, 605, 80, true, "orange"],
-	[90, 20, 705, 80, true, "orange"],
-
-	// Row 5
-	[95, 20, 005, 105, true, "green"],
-	[95, 20, 105, 105, true, "green"],
-	[95, 20, 205, 105, true, "green"],
-	[95, 20, 305, 105, true, "green"],
-	[95, 20, 405, 105, true, "green"],
-	[95, 20, 505, 105, true, "green"],
-	[95, 20, 605, 105, true, "green"],
-	[90, 20, 705, 105, true, "green"],
-
-	// Row 6
-	[95, 20, 005, 130, true, "green"],
-	[95, 20, 105, 130, true, "green"],
-	[95, 20, 205, 130, true, "green"],
-	[95, 20, 305, 130, true, "green"],
-	[95, 20, 405, 130, true, "green"],
-	[95, 20, 505, 130, true, "green"],
-	[95, 20, 605, 130, true, "green"],
-	[90, 20, 705, 130, true, "green"],
-
-	// Row 7
-	[95, 20, 005, 155, true, "yellow"],
-	[95, 20, 105, 155, true, "yellow"],
-	[95, 20, 205, 155, true, "yellow"],
-	[95, 20, 305, 155, true, "yellow"],
-	[95, 20, 405, 155, true, "yellow"],
-	[95, 20, 505, 155, true, "yellow"],
-	[95, 20, 605, 155, true, "yellow"],
-	[90, 20, 705, 155, true, "yellow"],
-
-	// RBottom row
-	[95, 20, 005, 180, true, "yellow"],
-	[95, 20, 105, 180, true, "yellow"],
-	[95, 20, 205, 180, true, "yellow"],
-	[95, 20, 305, 180, true, "yellow"],
-	[95, 20, 405, 180, true, "yellow"],
-	[95, 20, 505, 180, true, "yellow"],
-	[95, 20, 605, 180, true, "yellow"],
-	[90, 20, 705, 180, true, "yellow"]
 ]
-*/
 
-function drawBlocks(){
-	blocks.forEach(x => {
+
+function drawEnemies(){
+	enemies.forEach(x => {
 		if (x[4] == true){
-			ctx.beginPath();
-			ctx.rect(x[2], x[3], x[0], x[1]);
-			ctx.stroke();
-			ctx.fillStyle = x[5];
-			ctx.fill();
+			ctx.drawImage(enemy1Image, x[0], x[1], x[2], x[3]);
 		}
 	});
 }
@@ -302,9 +225,9 @@ function keyUp(e){
 
 function update(){
 	clearCanvas();
-	drawMissile();
-	//drawBlocks();
 	drawPlayer();
+	drawMissile();
+	drawEnemies();
 	newPos();
 	//detectBallWallCollision();
 	//detectBallBlockCollision();

@@ -37,6 +37,6 @@ canvas {
 }
 */
 
-#player {
+#player, #enemy1 {
 	display: none;
 }
