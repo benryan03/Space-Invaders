@@ -248,14 +248,11 @@ function loseLife(){
 */
 
 function checkEnemiesMoveDown(){
-	if (enemies[7][0] >= 540){
-
+	if (enemies[7][0] >= 540 || enemies[0][0] <= 10){
+		enemySpeed *= -1;;
 		enemies.forEach(enemy => {
 			enemy[1] += 47;
 		})
-
-		enemySpeed *= -1;;
-
 	}
 }
 
