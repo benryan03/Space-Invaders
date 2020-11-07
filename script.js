@@ -15,6 +15,7 @@ const player = {
 
 var missileRadius = 5;
 var missileSpeed = 20;
+var enemySpeed = 1;
 
 const missile = {
 	x: 0,		// Center x
@@ -51,12 +52,56 @@ function drawMissile(){
 var enemies = [
 
 	// [x, y, w, h, visible]
-	[5, 5, 65, 48, true],
-	[75, 5, 65, 48, true],
-	[145, 5, 65, 48, true],
-	[215, 5, 65, 48, true],
-	[285, 5, 65, 48, true],
 
+	// Top row
+	[11, 10, 50, 37, true],
+	[71, 10, 50, 37, true],
+	[131, 10, 50, 37, true],
+	[191, 10, 50, 37, true],
+	[251, 10, 50, 37, true],
+	[311, 10, 50, 37, true],
+	[371, 10, 50, 37, true],
+	[431, 10, 50, 37, true],
+
+	// Row 2
+	[11, 57, 50, 37, true],
+	[71, 57, 50, 37, true],
+	[131, 57, 50, 37, true],
+	[191, 57, 50, 37, true],
+	[251, 57, 50, 37, true],
+	[311, 57, 50, 37, true],
+	[371, 57, 50, 37, true],
+	[431, 57, 50, 37, true],
+
+	// Row 3
+	[11, 104, 50, 37, true],
+	[71, 104, 50, 37, true],
+	[131, 104, 50, 37, true],
+	[191, 104, 50, 37, true],
+	[251, 104, 50, 37, true],
+	[311, 104, 50, 37, true],
+	[371, 104, 50, 37, true],
+	[431, 104, 50, 37, true],
+
+	// Row 4
+	[11, 151, 50, 37, true],
+	[71, 151, 50, 37, true],
+	[131, 151, 50, 37, true],
+	[191, 151, 50, 37, true],
+	[251, 151, 50, 37, true],
+	[311, 151, 50, 37, true],
+	[371, 151, 50, 37, true],
+	[431, 151, 50, 37, true],
+
+	// Bottom row
+	[11, 198, 50, 37, true],
+	[71, 198, 50, 37, true],
+	[131, 198, 50, 37, true],
+	[191, 198, 50, 37, true],
+	[251, 198, 50, 37, true],
+	[311, 198, 50, 37, true],
+	[371, 198, 50, 37, true],
+	[431, 198, 50, 37, true],
 ]
 
 
@@ -82,6 +127,10 @@ function newPos(){
 			missiles.shift();
 		}
 	});
+
+	enemies.forEach(enemy => {
+		enemy[0] += enemySpeed;
+	})
 }
 
 function detectPlayerWallCollision(){
@@ -94,7 +143,7 @@ function detectPlayerWallCollision(){
 		player.x = canvas.width - player.w;
 	}
 }
-
+/*
 function detectPlayerBallCollision(){
 	if 
 	(
@@ -116,6 +165,7 @@ function detectPlayerBallCollision(){
 		click.play();
 	}
 }
+*/
 
 /*
 function detectBallWallCollision(){
@@ -197,6 +247,18 @@ function loseLife(){
 }
 */
 
+function checkEnemiesMoveDown(){
+	if (enemies[7][0] >= 540){
+
+		enemies.forEach(enemy => {
+			enemy[1] += 47;
+		})
+
+		enemySpeed *= -1;;
+
+	}
+}
+
 function keyDown(e){
 	if (e.key == 'ArrowRight' || e.key == 'Right'){
 		// Move player right
@@ -229,6 +291,7 @@ function update(){
 	drawMissile();
 	drawEnemies();
 	newPos();
+	checkEnemiesMoveDown();
 	//detectBallWallCollision();
 	//detectBallBlockCollision();
 	detectPlayerWallCollision();
