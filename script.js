@@ -282,7 +282,7 @@ function keyDown(e){
 		// Move player left
 		player.dx = -player.speed;
 	}
-	else if (e.keyCode == 32){
+	else if (e.keyCode == 32 && event.repeat == false){
 		fireMissile();
 	}
 }
