@@ -266,6 +266,14 @@ function drawBombs(){
 	});
 }
 
+function checkGameOver(){
+	enemies.forEach(enemy => {
+		if (enemy[1] + enemy[3] >= 780 && enemy[4] == true){
+			alert("Game over!");
+		}
+	});
+}
+
 function update(){
 	clearCanvas();
 	drawPlayer();
@@ -276,6 +284,7 @@ function update(){
 	newPos();
 	checkEnemiesMoveDown();
 	detectPlayerWallCollision();
+	checkGameOver();
 	requestAnimationFrame(update);
 }
 
