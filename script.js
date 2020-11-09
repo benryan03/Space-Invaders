@@ -151,78 +151,7 @@ function detectPlayerWallCollision(){
 		player.x = canvas.width - player.w;
 	}
 }
-/*
-function detectPlayerBallCollision(){
-	if 
-	(
-		ball.y + ball.size == player.y && 
-		ball.x + ball.size > player.x && 
-		ball.x + ball.size < player.x + player.w
-	)
-{ 		// Bounce up
-		ball.dy *= -1;
 
-		// Calculate angle
-		var ballPos = (ball.x);
-		var playerCenter = player.x + (player.w / 2);
-		var ballOffset = (ballPos - playerCenter) / (player.w / 2);
-		
-		// Change angle
-		ball.dx = ballOffset * 5;
-		ball.dx.toFixed(2);
-		click.play();
-	}
-}
-*/
-
-/*
-function detectBallWallCollision(){
-	// Side walls
-	if (ball.x + ball.size > canvas.width || ball.x - ball.size < 0){
-		ball.dx *= -1
-	}
-	// Top wall
-	if (ball.y - (ball.size*2) < 0){
-		ball.dy *= -1;
-	}
-	// Bottom wall
-	if (ball.y + ball.size == canvas.height){
-		loseLife();
-	}
-}
-*/
-/*
-function detectBallBlockCollision(){
-	for (x = 0; x < blocks.length; x++){
-		if 
-		(
-			(
-				// Bottom edge of block
-				ball.y - ball.size == blocks[x][3] + blocks[x][1] &&	// Top point of ball is at block bottom edge
-				ball.x - ball.size >= blocks[x][2] && 					// Top point of ball is right of left side of block
-				ball.x - ball.size <= blocks[x][2] + blocks[x][0] && 	// Top point of ball is left of right side of block
-				blocks[x][4] == true									// Block was visible
-			) || 
-			(
-				// Top edge of block
-				ball.y + ball.size == blocks[x][3] &&					// Bottom point of ball is at block top edge
-				ball.x + ball.size >= blocks[x][2] && 					// Bottom point of ball is right of left side of block
-				ball.x + ball.size <= blocks[x][2] + blocks[x][0] && 	// Bottom point of ball is left of right side of block
-				blocks[x][4] == true									// Block was visible
-			)
-		)
-		{
-			ball.dy *= -1;
-			blocks[x][4] = false;
-			crack.play();
-			updateScore(blocks[x][5]);
-			break;
-		}
-	}
-}
-*/
-
-/*
 function updateScore(blockColor){
 	if (blockColor == "yellow"){
 		score += 1;
@@ -253,7 +182,6 @@ function loseLife(){
 		alert("Game over.");
 	}
 }
-*/
 
 function checkEnemiesMoveDown(){
 	if (enemies[7][0] >= 540 || enemies[0][0] <= 10){
@@ -347,10 +275,7 @@ function update(){
 	drawBombs();
 	newPos();
 	checkEnemiesMoveDown();
-	//detectBallWallCollision();
-	//detectBallBlockCollision();
 	detectPlayerWallCollision();
-	//detectPlayerBallCollision();
 	requestAnimationFrame(update);
 }
 
