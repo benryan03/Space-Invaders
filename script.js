@@ -256,6 +256,23 @@ function checkEnemiesMoveDown(){
 	}
 }
 
+function detectMissileEnemyCollision(){
+	missiles.forEach(missile => {
+		enemies.forEach(enemy => {
+			if (
+					missile[0] >= enemy[0] &&
+					missile[0] <= enemy[0] + enemy[2] &&
+					missile[1] <= enemy[1] &&
+					enemy[4] == true
+				)
+				{
+					enemy[4] = false;
+					missiles.pop();
+				}
+		});
+	});
+}
+
 function keyDown(e){
 	if (e.key == 'ArrowRight' || e.key == 'Right'){
 		// Move player right
@@ -286,6 +303,7 @@ function update(){
 	clearCanvas();
 	drawPlayer();
 	drawMissile();
+	detectMissileEnemyCollision();
 	drawEnemies();
 	newPos();
 	checkEnemiesMoveDown();
