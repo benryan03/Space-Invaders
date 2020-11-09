@@ -14,7 +14,9 @@ const player = {
 }
 
 var missileRadius = 5;
-var missileSpeed = 20;
+var missileSpeed = 10;
+var bombRadius = 5;
+var bombSpeed = 10;
 var enemySpeed = 1;
 
 const missile = {
@@ -25,6 +27,7 @@ const missile = {
 }
 
 var missiles = []
+var bombs = []
 
 function drawPlayer(){
 	ctx.drawImage(playerImage, player.x, player.y, player.w, player.h);
@@ -34,7 +37,6 @@ function fireMissile(){
 	xPos = player.x + 40;
 	yPos = 740;
 	missiles.push([xPos, yPos]);
-	console.log(missiles);
 }
 
 function drawMissile(){
@@ -45,7 +47,6 @@ function drawMissile(){
 		ctx.fillStyle = "green";
 		ctx.fill();
 	});
-	
 }
 
 
@@ -125,6 +126,13 @@ function newPos(){
 		missile[1] -= missileSpeed;
 		if (missile[1] <= 0){
 			missiles.shift();
+		}
+	});
+
+	bombs.forEach(bomb => {
+		bomb[1] += bombSpeed;
+		if (bomb[1] >= 800){
+			bombs.shift();
 		}
 	});
 
@@ -260,10 +268,11 @@ function detectMissileEnemyCollision(){
 	missiles.forEach(missile => {
 		enemies.forEach(enemy => {
 			if (
-					missile[0] >= enemy[0] &&
-					missile[0] <= enemy[0] + enemy[2] &&
-					missile[1] <= enemy[1] &&
-					enemy[4] == true
+					missile[0] >= enemy[0] &&				// missile xPos >= enemy left edge
+					missile[0] <= enemy[0] + enemy[2] &&	// missile xPos <= enemy right edge
+					missile[1] <= enemy[1] + enemy[3] &&	// missile yPos <= enemy bottom edge 
+					missile[1] >= enemy[1] &&				// missile yPos == enemy bottom edge 
+					enemy[4] == true						// enemy is alive
 				)
 				{
 					enemy[4] = false;
@@ -299,12 +308,39 @@ function keyUp(e){
 	}
 }
 
+function dropBomb(){
+	rand = Math.floor(Math.random() * 40);
+	console.log(rand);
+	console.log(enemies[rand][0]);
+	while (enemies[rand][4] == false){
+		rand += 1;
+		if (rand == 39){
+			rand = 0;
+		}
+	}
+	xPos = enemies[rand][0] + 25;
+	yPos = enemies[rand][1] + 37;
+	bombs.push([xPos, yPos]);
+	console.log(bombs);
+}
+
+function drawBombs(){
+	bombs.forEach(x => {
+		ctx.beginPath();
+		ctx.arc(x[0], x[1], bombRadius, 0, Math.PI * 2);
+		ctx.stroke();
+		ctx.fillStyle = "red";
+		ctx.fill();
+	});
+}
+
 function update(){
 	clearCanvas();
 	drawPlayer();
 	drawMissile();
 	detectMissileEnemyCollision();
 	drawEnemies();
+	drawBombs();
 	newPos();
 	checkEnemiesMoveDown();
 	//detectBallWallCollision();
@@ -313,6 +349,8 @@ function update(){
 	//detectPlayerBallCollision();
 	requestAnimationFrame(update);
 }
+
+var dropBombEachSecond = setInterval(dropBomb, 1000);
 
 update();
 
