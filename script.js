@@ -21,7 +21,7 @@ var enemySpeed = 1;
 
 var lives = 3;
 var score = 0;
-var gameOver = false;
+var gameActive = false;
 var explosionRadius = 51
 
 const missile = {
@@ -178,7 +178,7 @@ function loseLife(){
 	}
 	else{
 		document.getElementById('lives').innerHTML = "Lives: 0";
-		gameOver = true;
+		gameActive = false;
 		alert("Game over.");
 	}
 }
@@ -250,19 +250,20 @@ function keyUp(e){
 }
 
 function dropBomb(){
-	rand = Math.floor(Math.random() * 40);
-	console.log(rand);
-	console.log(enemies[rand][0]);
-	while (enemies[rand][4] == false){
-		rand += 1;
-		if (rand == 39){
-			rand = 0;
+	if (gameActive == true){
+		rand = Math.floor(Math.random() * 40);
+		console.log(rand);
+		console.log(enemies[rand][0]);
+		while (enemies[rand][4] == false){
+			rand += 1;
+			if (rand == 39){
+				rand = 0;
+			}
 		}
+		xPos = enemies[rand][0] + 25;
+		yPos = enemies[rand][1] + 37;
+		bombs.push([xPos, yPos]);
 	}
-	xPos = enemies[rand][0] + 25;
-	yPos = enemies[rand][1] + 37;
-	bombs.push([xPos, yPos]);
-	console.log(bombs);
 }
 
 function drawBombs(){
@@ -278,7 +279,7 @@ function drawBombs(){
 function checkGameOver(){
 	enemies.forEach(enemy => {
 		if (enemy[1] + enemy[3] >= 780 && enemy[4] == true){
-			gameOver = true;
+			gameActive = false;
 			alert("Game over!");
 
 		}
@@ -334,7 +335,7 @@ function update(){
 	detectPlayerBombCollision();
 	checkGameOver();
 
-	if (gameOver == false){
+	if (gameActive == true){
 		requestAnimationFrame(update);
 	}
 }
@@ -344,9 +345,40 @@ function updateScore(points){
 	document.getElementById('score').innerHTML = "Score: " + score	.toString();
 }
 
+function drawStartButton(){
+	ctx.beginPath();
+	ctx.rect(100, 170, 400, 200);
+	ctx.stroke();
+	ctx.fillStyle = "lightgray";
+	ctx.fill();
+
+	ctx.fillStyle = "black";
+	ctx.font = "60px Arial";
+	ctx.textAlign = "center";
+	ctx.fillText("START", 300, 250);
+
+	ctx.font = "30px Arial";
+	ctx.textAlign = "center";
+	ctx.fillText("Move: arrow keys", 300, 300);
+
+	ctx.font = "30px Arial";
+	ctx.textAlign = "center";
+	ctx.fillText("Fire: space", 300, 330);
+}
+
+function startGame(){
+	gameActive = true;
+	update();
+}
+
 var dropBombEachSecond = setInterval(dropBomb, 1000);
 
-update();
+// START
+drawPlayer();
+drawMissile();
+drawEnemies();
+drawStartButton();
 
 document.addEventListener('keydown', keyDown);
 document.addEventListener('keyup', keyUp);
+canvas.onclick = startGame;
