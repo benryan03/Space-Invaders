@@ -19,6 +19,8 @@ var bombRadius = 5;
 var bombSpeed = 10;
 var enemySpeed = 1;
 
+var lives = 3;
+
 const missile = {
 	x: 0,		// Center x
 	y: 0,		// Center y
@@ -168,17 +170,13 @@ function updateScore(blockColor){
 	document.getElementById('score').innerHTML = "Score: " + score.toString();
 }
 
-
 function loseLife(){
 	lives -= 1;
 	if (lives > 0){
 		document.getElementById('lives').innerHTML = "Lives: " + lives.toString();
-		ball.x = 10;
-		ball.y = 250;
-		ball.dx = 5,
-		ball.dy = 5
 	}
 	else{
+		document.getElementById('lives').innerHTML = "Lives: 0";
 		alert("Game over.");
 	}
 }
@@ -274,6 +272,21 @@ function checkGameOver(){
 	});
 }
 
+function detectPlayerBombCollision(){
+	bombs.forEach(bomb => {
+		if (
+				bomb[0] > player.x &&
+				bomb[0] < player.x + player.w &&
+				bomb[1] > player.y &&
+				bomb[1] < player.y + player.h
+			)
+			{
+				bombs.pop();
+				loseLife();
+			}		
+	});
+}
+
 function update(){
 	clearCanvas();
 	drawPlayer();
@@ -284,6 +297,7 @@ function update(){
 	newPos();
 	checkEnemiesMoveDown();
 	detectPlayerWallCollision();
+	detectPlayerBombCollision();
 	checkGameOver();
 	requestAnimationFrame(update);
 }
