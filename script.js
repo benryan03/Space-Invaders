@@ -20,6 +20,8 @@ var bombSpeed = 10;
 var enemySpeed = 1;
 
 var lives = 3;
+var gameOver = false;
+var explosionRadius = 51
 
 const missile = {
 	x: 0,		// Center x
@@ -177,6 +179,7 @@ function loseLife(){
 	}
 	else{
 		document.getElementById('lives').innerHTML = "Lives: 0";
+		gameOver = true;
 		alert("Game over.");
 	}
 }
@@ -267,7 +270,9 @@ function drawBombs(){
 function checkGameOver(){
 	enemies.forEach(enemy => {
 		if (enemy[1] + enemy[3] >= 780 && enemy[4] == true){
+			gameOver = true;
 			alert("Game over!");
+
 		}
 	});
 }
@@ -282,9 +287,25 @@ function detectPlayerBombCollision(){
 			)
 			{
 				bombs.pop();
+				explosionRadius = 0;
+				drawExplosion();
 				loseLife();
 			}		
 	});
+}
+
+function drawExplosion(){
+
+	explosionRadius += 10;
+
+	if (explosionRadius <= 50){
+		ctx.beginPath();
+		ctx.arc(player.x + player.w/2, player.y, explosionRadius, 0, Math.PI * 2);
+		ctx.stroke();
+		ctx.fillStyle = "yellow";
+		ctx.fill();
+	}
+	
 }
 
 function update(){
@@ -294,12 +315,20 @@ function update(){
 	detectMissileEnemyCollision();
 	drawEnemies();
 	drawBombs();
+
+	if (explosionRadius <= 50){
+		drawExplosion();
+	}
+
 	newPos();
 	checkEnemiesMoveDown();
 	detectPlayerWallCollision();
 	detectPlayerBombCollision();
 	checkGameOver();
-	requestAnimationFrame(update);
+
+	if (gameOver == false){
+		requestAnimationFrame(update);
+	}
 }
 
 var dropBombEachSecond = setInterval(dropBomb, 1000);
