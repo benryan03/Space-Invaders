@@ -20,6 +20,7 @@ var bombSpeed = 10;
 var enemySpeed = 1;
 
 var lives = 3;
+var score = 0;
 var gameOver = false;
 var explosionRadius = 51
 
@@ -53,62 +54,60 @@ function drawMissile(){
 	});
 }
 
-
 var enemies = [
 
-	// [x, y, w, h, visible]
+	// [x, y, w, h, visible, score]
 
 	// Top row
-	[11, 10, 50, 37, true],
-	[71, 10, 50, 37, true],
-	[131, 10, 50, 37, true],
-	[191, 10, 50, 37, true],
-	[251, 10, 50, 37, true],
-	[311, 10, 50, 37, true],
-	[371, 10, 50, 37, true],
-	[431, 10, 50, 37, true],
+	[11, 10, 50, 37, true, 30],
+	[71, 10, 50, 37, true, 30],
+	[131, 10, 50, 37, true, 30],
+	[191, 10, 50, 37, true, 30],
+	[251, 10, 50, 37, true, 30],
+	[311, 10, 50, 37, true, 30],
+	[371, 10, 50, 37, true, 30],
+	[431, 10, 50, 37, true, 30],
 
 	// Row 2
-	[11, 57, 50, 37, true],
-	[71, 57, 50, 37, true],
-	[131, 57, 50, 37, true],
-	[191, 57, 50, 37, true],
-	[251, 57, 50, 37, true],
-	[311, 57, 50, 37, true],
-	[371, 57, 50, 37, true],
-	[431, 57, 50, 37, true],
+	[11, 57, 50, 37, true, 20],
+	[71, 57, 50, 37, true, 20],
+	[131, 57, 50, 37, true, 20],
+	[191, 57, 50, 37, true, 20],
+	[251, 57, 50, 37, true, 20],
+	[311, 57, 50, 37, true, 20],
+	[371, 57, 50, 37, true, 20],
+	[431, 57, 50, 37, true, 20],
 
 	// Row 3
-	[11, 104, 50, 37, true],
-	[71, 104, 50, 37, true],
-	[131, 104, 50, 37, true],
-	[191, 104, 50, 37, true],
-	[251, 104, 50, 37, true],
-	[311, 104, 50, 37, true],
-	[371, 104, 50, 37, true],
-	[431, 104, 50, 37, true],
+	[11, 104, 50, 37, true, 20],
+	[71, 104, 50, 37, true, 20],
+	[131, 104, 50, 37, true, 20],
+	[191, 104, 50, 37, true, 20],
+	[251, 104, 50, 37, true, 20],
+	[311, 104, 50, 37, true, 20],
+	[371, 104, 50, 37, true, 20],
+	[431, 104, 50, 37, true, 20],
 
 	// Row 4
-	[11, 151, 50, 37, true],
-	[71, 151, 50, 37, true],
-	[131, 151, 50, 37, true],
-	[191, 151, 50, 37, true],
-	[251, 151, 50, 37, true],
-	[311, 151, 50, 37, true],
-	[371, 151, 50, 37, true],
-	[431, 151, 50, 37, true],
+	[11, 151, 50, 37, true, 10],
+	[71, 151, 50, 37, true, 10],
+	[131, 151, 50, 37, true, 10],
+	[191, 151, 50, 37, true, 10],
+	[251, 151, 50, 37, true, 10],
+	[311, 151, 50, 37, true, 10],
+	[371, 151, 50, 37, true, 10],
+	[431, 151, 50, 37, true, 10],
 
 	// Bottom row
-	[11, 198, 50, 37, true],
-	[71, 198, 50, 37, true],
-	[131, 198, 50, 37, true],
-	[191, 198, 50, 37, true],
-	[251, 198, 50, 37, true],
-	[311, 198, 50, 37, true],
-	[371, 198, 50, 37, true],
-	[431, 198, 50, 37, true],
+	[11, 198, 50, 37, true, 10],
+	[71, 198, 50, 37, true, 10],
+	[131, 198, 50, 37, true, 10],
+	[191, 198, 50, 37, true, 10],
+	[251, 198, 50, 37, true, 10],
+	[311, 198, 50, 37, true, 10],
+	[371, 198, 50, 37, true, 10],
+	[431, 198, 50, 37, true, 10],
 ]
-
 
 function drawEnemies(){
 	enemies.forEach(x => {
@@ -187,6 +186,14 @@ function loseLife(){
 function checkEnemiesMoveDown(){
 	if (enemies[7][0] >= 540 || enemies[0][0] <= 10){
 		enemySpeed *= -1;;
+
+		if (enemySpeed > 0){
+			enemySpeed += .05;
+		}
+		else if (enemySpeed < 0){
+			enemySpeed -= .05;
+		}
+
 		enemies.forEach(enemy => {
 			enemy[1] += 47;
 		})
@@ -206,6 +213,7 @@ function detectMissileEnemyCollision(){
 				{
 					enemy[4] = false;
 					missiles.pop();
+					updateScore(enemy[5]);
 				}
 		});
 	});
@@ -329,6 +337,11 @@ function update(){
 	if (gameOver == false){
 		requestAnimationFrame(update);
 	}
+}
+
+function updateScore(points){
+	score += points;
+	document.getElementById('score').innerHTML = "Score: " + score	.toString();
 }
 
 var dropBombEachSecond = setInterval(dropBomb, 1000);
