@@ -293,6 +293,10 @@ function keyDown(e){
 	}
 	else if (e.keyCode == 32 && event.repeat == false){
 		fireMissile();
+		e.preventDefault();
+	}
+	else if (e.key =='ArrowUp' || e.key == 'Up' || e.key =='ArrowDown' || e.key == 'Down'){
+		e.preventDefault();
 	}
 }
 
