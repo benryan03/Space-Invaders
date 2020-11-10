@@ -24,6 +24,8 @@ var score = 0;
 var level = 1;
 var gameActive = false;
 var explosionRadius = 51
+var enemyExplosionRadius = 31;
+var enemyExplosions = [];
 
 const missile = {
 	x: 0,		// Center x
@@ -215,6 +217,10 @@ function detectMissileEnemyCollision(){
 					enemy[4] = false;
 					missiles.pop();
 					updateScore(enemy[5]);
+
+					
+					enemyExplosions.push([enemy[0], enemy[1], enemy[2], enemy[3], 0]);
+
 					checkLevelUp();					
 				}
 		});
@@ -222,6 +228,7 @@ function detectMissileEnemyCollision(){
 }
 
 function keyDown(e){
+
 	if (e.key == 'ArrowRight' || e.key == 'Right'){
 		// Move player right
 		player.dx = player.speed;
@@ -305,9 +312,7 @@ function detectPlayerBombCollision(){
 }
 
 function drawExplosion(){
-
 	explosionRadius += 10;
-
 	if (explosionRadius <= 50){
 		ctx.beginPath();
 		ctx.arc(player.x + player.w/2, player.y, explosionRadius, 0, Math.PI * 2);
@@ -315,7 +320,29 @@ function drawExplosion(){
 		ctx.fillStyle = "yellow";
 		ctx.fill();
 	}
-	
+}
+
+function drawEnemyExplosions(){
+	enemyExplosions.forEach(explosion => {
+
+		//console.log(explosion);
+
+		explosion[4] += 5; // explosion radius
+		if (explosion[4] <= enemyExplosionRadius){
+			ctx.beginPath();
+			ctx.arc(explosion[0] + explosion[2]/2, explosion[1] + explosion[3] / 2, explosion[4], 0, Math.PI * 2);
+			ctx.stroke();
+			ctx.fillStyle = "white";
+			ctx.fill();
+		}
+		else {
+			enemyExplosions.pop();
+		}
+		
+
+
+	});
+
 }
 
 function update(){
@@ -330,18 +357,16 @@ function update(){
 		if (explosionRadius <= 50){
 			drawExplosion();
 		}
+
+		drawEnemyExplosions();
 	
 		newPos();
 		checkEnemiesMoveDown();
 		detectPlayerWallCollision();
 		detectPlayerBombCollision();
 		checkGameOver();
-	
-		if (gameActive == true){
-			requestAnimationFrame(update);
-		}
+		requestAnimationFrame(update);
 	}
-
 }
 
 function updateScore(points){
@@ -381,14 +406,12 @@ function checkLevelUp(){
 			return;
 		}
 	}
+
 	level++;;
 	document.getElementById('level').innerHTML = "Level: " + level.toString();
+	
 	gameActive = false;
 	enemies = [
-
-		// [x, y, w, h, visible, score]
-	
-		// Top row
 		[11, 10, 50, 37, true, 30],
 		[71, 10, 50, 37, true, 30],
 		[131, 10, 50, 37, true, 30],
@@ -398,7 +421,6 @@ function checkLevelUp(){
 		[371, 10, 50, 37, true, 30],
 		[431, 10, 50, 37, true, 30],
 	
-		// Row 2
 		[11, 57, 50, 37, true, 20],
 		[71, 57, 50, 37, true, 20],
 		[131, 57, 50, 37, true, 20],
@@ -408,7 +430,6 @@ function checkLevelUp(){
 		[371, 57, 50, 37, true, 20],
 		[431, 57, 50, 37, true, 20],
 	
-		// Row 3
 		[11, 104, 50, 37, true, 20],
 		[71, 104, 50, 37, true, 20],
 		[131, 104, 50, 37, true, 20],
@@ -418,7 +439,6 @@ function checkLevelUp(){
 		[371, 104, 50, 37, true, 20],
 		[431, 104, 50, 37, true, 20],
 	
-		// Row 4
 		[11, 151, 50, 37, true, 10],
 		[71, 151, 50, 37, true, 10],
 		[131, 151, 50, 37, true, 10],
@@ -428,7 +448,6 @@ function checkLevelUp(){
 		[371, 151, 50, 37, true, 10],
 		[431, 151, 50, 37, true, 10],
 	
-		// Bottom row
 		[11, 198, 50, 37, true, 10],
 		[71, 198, 50, 37, true, 10],
 		[131, 198, 50, 37, true, 10],
@@ -440,13 +459,17 @@ function checkLevelUp(){
 	]	
 	bombs = [];
 	misiles = [];
+
 	levelUpScreen1();
+	setTimeout(levelUpScreen2, 1000);
+	setTimeout(levelUpScreen3, 2000);
+	setTimeout(levelUp, 3000);
 }
 
 function levelUpScreen1(){
 	clearCanvas();
 	drawPlayer();
-	drawEnemies();
+	//drawEnemies();
 	
 	ctx.beginPath();
 	ctx.rect(100, 170, 400, 200);
@@ -462,9 +485,6 @@ function levelUpScreen1(){
 	ctx.font = "60px Arial";
 	ctx.textAlign = "center";
 	ctx.fillText("3", 300, 320);
-
-	setTimeout(levelUpScreen2, 1000);
-
 }
 
 function levelUpScreen2(){
@@ -486,9 +506,6 @@ function levelUpScreen2(){
 	ctx.font = "60px Arial";
 	ctx.textAlign = "center";
 	ctx.fillText("2", 300, 320);
-
-	setTimeout(levelUpScreen3, 1000);
-
 }
 
 function levelUpScreen3(){
@@ -510,29 +527,24 @@ function levelUpScreen3(){
 	ctx.font = "60px Arial";
 	ctx.textAlign = "center";
 	ctx.fillText("1", 300, 320);
-
-	setTimeout(levelUp, 1000);
 }
 
 function levelUp(){
 	gameActive = true;
 	enemySpeed = 1;
-	
 	update();
 }
 
 
-//var dropBombEachSecond = setInterval(dropBomb, 1000);
+var dropBombEachSecond = setInterval(dropBomb, 1000);
 
 
 
 
 // START
 drawPlayer();
-//drawMissile();
 drawEnemies();
 drawStartButton();
-//levelUpScreen1();
 
 document.addEventListener('keydown', keyDown);
 document.addEventListener('keyup', keyUp);
