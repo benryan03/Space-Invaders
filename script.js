@@ -21,6 +21,7 @@ var enemySpeed = 1;
 
 var lives = 3;
 var score = 0;
+var level = 1;
 var gameActive = false;
 var explosionRadius = 51
 
@@ -214,6 +215,7 @@ function detectMissileEnemyCollision(){
 					enemy[4] = false;
 					missiles.pop();
 					updateScore(enemy[5]);
+					checkLevelUp();					
 				}
 		});
 	});
@@ -252,8 +254,8 @@ function keyUp(e){
 function dropBomb(){
 	if (gameActive == true){
 		rand = Math.floor(Math.random() * 40);
-		console.log(rand);
-		console.log(enemies[rand][0]);
+		//console.log(rand);
+		//console.log(enemies[rand][0]);
 		while (enemies[rand][4] == false){
 			rand += 1;
 			if (rand == 39){
@@ -281,7 +283,6 @@ function checkGameOver(){
 		if (enemy[1] + enemy[3] >= 780 && enemy[4] == true){
 			gameActive = false;
 			alert("Game over!");
-
 		}
 	});
 }
@@ -369,6 +370,21 @@ function drawStartButton(){
 function startGame(){
 	gameActive = true;
 	update();
+}
+
+function checkLevelUp(){
+	for(x=0; x<40; x++){
+		if (enemies[x][4] == true){
+			return;
+		}
+	}
+	levelUp();
+}
+
+function levelUp(){
+	level++;;
+	document.getElementById('level').innerHTML = "Level: " + level.toString();
+	alert("Level up!");
 }
 
 var dropBombEachSecond = setInterval(dropBomb, 1000);
