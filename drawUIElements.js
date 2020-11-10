@@ -22,7 +22,7 @@ function drawStartButton(){
 function levelUpScreen1(){
 	clearCanvas();
 	drawPlayer();
-	//drawEnemies();
+	drawEnemies();
 	
 	ctx.beginPath();
 	ctx.rect(100, 170, 400, 200);

@@ -23,9 +23,10 @@ var lives = 3;
 var score = 0;
 var level = 1;
 var gameActive = false;
-var explosionRadius = 51
+var playerExplosionRadius = 51
 var enemyExplosionRadius = 31;
 var enemyExplosions = [];
+var playerExplosion = [];
 
 const missile = {
 	x: 0,		// Center x
@@ -136,10 +137,7 @@ function detectMissileEnemyCollision(){
 					enemy[4] = false;
 					missiles.pop();
 					updateScore(enemy[5]);
-
-					
 					enemyExplosions.push([enemy[0], enemy[1], enemy[2], enemy[3], 0]);
-
 					checkLevelUp();					
 				}
 		});
@@ -150,15 +148,21 @@ function keyDown(e){
 
 	if (e.key == 'ArrowRight' || e.key == 'Right'){
 		// Move player right
-		player.dx = player.speed;
+		if (gameActive == true){
+			player.dx = player.speed;
+		}
 	}
 	else if (e.key == 'ArrowLeft' || e.key == 'Left'){
 		// Move player left
-		player.dx = -player.speed;
+		if (gameActive == true){
+			player.dx = -player.speed;
+		}
 	}
 	else if (e.keyCode == 32 && event.repeat == false){
-		fireMissile();
 		e.preventDefault();
+		if (gameActive == true){
+			fireMissile();
+		}
 	}
 	else if (e.key =='ArrowUp' || e.key == 'Up' || e.key =='ArrowDown' || e.key == 'Down'){
 		e.preventDefault();
@@ -211,7 +215,7 @@ function detectPlayerBombCollision(){
 			)
 			{
 				bombs.pop();
-				explosionRadius = 0;
+				playerExplosionRadius = 0;
 				loseLife();
 			}		
 	});
@@ -219,24 +223,22 @@ function detectPlayerBombCollision(){
 
 function update(){
 	if (gameActive == true){
+
 		clearCanvas();
 		drawPlayer();
 		drawMissiles();
-		detectMissileEnemyCollision();
 		drawEnemies();
 		drawBombs();
-	
-		if (explosionRadius <= 50){
-			drawPlayerExplosion();
-		}
-
 		drawEnemyExplosions();
-	
-		newPos();
-		checkEnemiesMoveDown();
+		drawPlayerExplosion();
+
+		detectMissileEnemyCollision();
 		detectPlayerWallCollision();
 		detectPlayerBombCollision();
+		checkEnemiesMoveDown();
 		checkGameOver();
+
+		newPos();
 		requestAnimationFrame(update);
 	}
 }
@@ -252,7 +254,7 @@ function startGame(){
 }
 
 function checkLevelUp(){
-	for(x=0; x<40; x++){
+	for(x = 0; x < 40; x++){
 		if (enemies[x][4] == true){
 			return;
 		}
@@ -260,11 +262,13 @@ function checkLevelUp(){
 
 	level++;;
 	document.getElementById('level').innerHTML = "Level: " + level.toString();
-	
 	gameActive = false;
-	enemies = enemiesStart;
+	enemies = resetEnemies();
 	bombs = [];
-	misiles = [];
+	missiles = [];
+	enemyExplosions = [];
+	playerExplosionRadius = 51;
+	enemySpeed = 1;
 
 	levelUpScreen1();
 	setTimeout(levelUpScreen2, 1000);
@@ -273,12 +277,14 @@ function checkLevelUp(){
 }
 
 function levelUp(){
+
+
 	gameActive = true;
-	enemySpeed = 1;
+
 	update();
 }
 
-var dropBombEachSecond = setInterval(dropBomb, 1000);
+//var dropBombEachSecond = setInterval(dropBomb, 1000);
 
 // START
 drawPlayer();

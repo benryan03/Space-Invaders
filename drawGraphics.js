@@ -35,10 +35,10 @@ function drawBombs(){
 }
 
 function drawPlayerExplosion(){
-	explosionRadius += 10;
-	if (explosionRadius <= 50){
+	if (playerExplosionRadius <= 50){
+		playerExplosionRadius += 10;
 		ctx.beginPath();
-		ctx.arc(player.x + player.w/2, player.y, explosionRadius, 0, Math.PI * 2);
+		ctx.arc(player.x + player.w/2, player.y, playerExplosionRadius, 0, Math.PI * 2);
 		ctx.stroke();
 		ctx.fillStyle = "yellow";
 		ctx.fill();
