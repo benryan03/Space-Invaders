@@ -37,91 +37,10 @@ const missile = {
 var missiles = []
 var bombs = []
 
-function drawPlayer(){
-	ctx.drawImage(playerImage, player.x, player.y, player.w, player.h);
-}
-
 function fireMissile(){
 	xPos = player.x + 40;
 	yPos = 740;
 	missiles.push([xPos, yPos]);
-}
-
-function drawMissile(){
-	missiles.forEach(x => {
-		ctx.beginPath();
-		ctx.arc(x[0], x[1], missileRadius, 0, Math.PI * 2);
-		ctx.stroke();
-		ctx.fillStyle = "green";
-		ctx.fill();
-	});
-}
-
-var enemies = [
-
-	// [x, y, w, h, visible, score]
-
-	// Top row
-	[11, 10, 50, 37, true, 30],
-	[71, 10, 50, 37, true, 30],
-	[131, 10, 50, 37, true, 30],
-	[191, 10, 50, 37, true, 30],
-	[251, 10, 50, 37, true, 30],
-	[311, 10, 50, 37, true, 30],
-	[371, 10, 50, 37, true, 30],
-	[431, 10, 50, 37, true, 30],
-
-	// Row 2
-	[11, 57, 50, 37, true, 20],
-	[71, 57, 50, 37, true, 20],
-	[131, 57, 50, 37, true, 20],
-	[191, 57, 50, 37, true, 20],
-	[251, 57, 50, 37, true, 20],
-	[311, 57, 50, 37, true, 20],
-	[371, 57, 50, 37, true, 20],
-	[431, 57, 50, 37, true, 20],
-
-	// Row 3
-	[11, 104, 50, 37, true, 20],
-	[71, 104, 50, 37, true, 20],
-	[131, 104, 50, 37, true, 20],
-	[191, 104, 50, 37, true, 20],
-	[251, 104, 50, 37, true, 20],
-	[311, 104, 50, 37, true, 20],
-	[371, 104, 50, 37, true, 20],
-	[431, 104, 50, 37, true, 20],
-
-	// Row 4
-	[11, 151, 50, 37, true, 10],
-	[71, 151, 50, 37, true, 10],
-	[131, 151, 50, 37, true, 10],
-	[191, 151, 50, 37, true, 10],
-	[251, 151, 50, 37, true, 10],
-	[311, 151, 50, 37, true, 10],
-	[371, 151, 50, 37, true, 10],
-	[431, 151, 50, 37, true, 10],
-
-	// Bottom row
-	[11, 198, 50, 37, true, 10],
-	[71, 198, 50, 37, true, 10],
-	[131, 198, 50, 37, true, 10],
-	[191, 198, 50, 37, true, 10],
-	[251, 198, 50, 37, true, 10],
-	[311, 198, 50, 37, true, 10],
-	[371, 198, 50, 37, true, 10],
-	[431, 198, 50, 37, true, 10],
-]
-
-function drawEnemies(){
-	enemies.forEach(x => {
-		if (x[4] == true){
-			ctx.drawImage(enemy1Image, x[0], x[1], x[2], x[3]);
-		}
-	});
-}
-
-function clearCanvas(){
-	ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
 
 function newPos(){
@@ -261,8 +180,6 @@ function keyUp(e){
 function dropBomb(){
 	if (gameActive == true){
 		rand = Math.floor(Math.random() * 40);
-		//console.log(rand);
-		//console.log(enemies[rand][0]);
 		while (enemies[rand][4] == false){
 			rand += 1;
 			if (rand == 39){
@@ -273,16 +190,6 @@ function dropBomb(){
 		yPos = enemies[rand][1] + 37;
 		bombs.push([xPos, yPos]);
 	}
-}
-
-function drawBombs(){
-	bombs.forEach(x => {
-		ctx.beginPath();
-		ctx.arc(x[0], x[1], bombRadius, 0, Math.PI * 2);
-		ctx.stroke();
-		ctx.fillStyle = "red";
-		ctx.fill();
-	});
 }
 
 function checkGameOver(){
@@ -305,57 +212,22 @@ function detectPlayerBombCollision(){
 			{
 				bombs.pop();
 				explosionRadius = 0;
-				drawExplosion();
 				loseLife();
 			}		
 	});
-}
-
-function drawExplosion(){
-	explosionRadius += 10;
-	if (explosionRadius <= 50){
-		ctx.beginPath();
-		ctx.arc(player.x + player.w/2, player.y, explosionRadius, 0, Math.PI * 2);
-		ctx.stroke();
-		ctx.fillStyle = "yellow";
-		ctx.fill();
-	}
-}
-
-function drawEnemyExplosions(){
-	enemyExplosions.forEach(explosion => {
-
-		//console.log(explosion);
-
-		explosion[4] += 5; // explosion radius
-		if (explosion[4] <= enemyExplosionRadius){
-			ctx.beginPath();
-			ctx.arc(explosion[0] + explosion[2]/2, explosion[1] + explosion[3] / 2, explosion[4], 0, Math.PI * 2);
-			ctx.stroke();
-			ctx.fillStyle = "white";
-			ctx.fill();
-		}
-		else {
-			enemyExplosions.pop();
-		}
-		
-
-
-	});
-
 }
 
 function update(){
 	if (gameActive == true){
 		clearCanvas();
 		drawPlayer();
-		drawMissile();
+		drawMissiles();
 		detectMissileEnemyCollision();
 		drawEnemies();
 		drawBombs();
 	
 		if (explosionRadius <= 50){
-			drawExplosion();
+			drawPlayerExplosion();
 		}
 
 		drawEnemyExplosions();
@@ -374,27 +246,6 @@ function updateScore(points){
 	document.getElementById('score').innerHTML = "Score: " + score	.toString();
 }
 
-function drawStartButton(){
-	ctx.beginPath();
-	ctx.rect(100, 170, 400, 200);
-	ctx.stroke();
-	ctx.fillStyle = "lightgray";
-	ctx.fill();
-
-	ctx.fillStyle = "black";
-	ctx.font = "60px Arial";
-	ctx.textAlign = "center";
-	ctx.fillText("START", 300, 250);
-
-	ctx.font = "30px Arial";
-	ctx.textAlign = "center";
-	ctx.fillText("Move: arrow keys", 300, 300);
-
-	ctx.font = "30px Arial";
-	ctx.textAlign = "center";
-	ctx.fillText("Fire: space", 300, 330);
-}
-
 function startGame(){
 	gameActive = true;
 	update();
@@ -411,52 +262,7 @@ function checkLevelUp(){
 	document.getElementById('level').innerHTML = "Level: " + level.toString();
 	
 	gameActive = false;
-	enemies = [
-		[11, 10, 50, 37, true, 30],
-		[71, 10, 50, 37, true, 30],
-		[131, 10, 50, 37, true, 30],
-		[191, 10, 50, 37, true, 30],
-		[251, 10, 50, 37, true, 30],
-		[311, 10, 50, 37, true, 30],
-		[371, 10, 50, 37, true, 30],
-		[431, 10, 50, 37, true, 30],
-	
-		[11, 57, 50, 37, true, 20],
-		[71, 57, 50, 37, true, 20],
-		[131, 57, 50, 37, true, 20],
-		[191, 57, 50, 37, true, 20],
-		[251, 57, 50, 37, true, 20],
-		[311, 57, 50, 37, true, 20],
-		[371, 57, 50, 37, true, 20],
-		[431, 57, 50, 37, true, 20],
-	
-		[11, 104, 50, 37, true, 20],
-		[71, 104, 50, 37, true, 20],
-		[131, 104, 50, 37, true, 20],
-		[191, 104, 50, 37, true, 20],
-		[251, 104, 50, 37, true, 20],
-		[311, 104, 50, 37, true, 20],
-		[371, 104, 50, 37, true, 20],
-		[431, 104, 50, 37, true, 20],
-	
-		[11, 151, 50, 37, true, 10],
-		[71, 151, 50, 37, true, 10],
-		[131, 151, 50, 37, true, 10],
-		[191, 151, 50, 37, true, 10],
-		[251, 151, 50, 37, true, 10],
-		[311, 151, 50, 37, true, 10],
-		[371, 151, 50, 37, true, 10],
-		[431, 151, 50, 37, true, 10],
-	
-		[11, 198, 50, 37, true, 10],
-		[71, 198, 50, 37, true, 10],
-		[131, 198, 50, 37, true, 10],
-		[191, 198, 50, 37, true, 10],
-		[251, 198, 50, 37, true, 10],
-		[311, 198, 50, 37, true, 10],
-		[371, 198, 50, 37, true, 10],
-		[431, 198, 50, 37, true, 10],
-	]	
+	enemies = enemiesStart;
 	bombs = [];
 	misiles = [];
 
@@ -466,80 +272,13 @@ function checkLevelUp(){
 	setTimeout(levelUp, 3000);
 }
 
-function levelUpScreen1(){
-	clearCanvas();
-	drawPlayer();
-	//drawEnemies();
-	
-	ctx.beginPath();
-	ctx.rect(100, 170, 400, 200);
-	ctx.stroke();
-	ctx.fillStyle = "lightgray";
-	ctx.fill();
-
-	ctx.fillStyle = "black";
-	ctx.font = "60px Arial";
-	ctx.textAlign = "center";
-	ctx.fillText("Level up!", 300, 250);
-
-	ctx.font = "60px Arial";
-	ctx.textAlign = "center";
-	ctx.fillText("3", 300, 320);
-}
-
-function levelUpScreen2(){
-	clearCanvas();
-	drawPlayer();
-	drawEnemies();
-
-	ctx.beginPath();
-	ctx.rect(100, 170, 400, 200);
-	ctx.stroke();
-	ctx.fillStyle = "lightgray";
-	ctx.fill();
-
-	ctx.fillStyle = "black";
-	ctx.font = "60px Arial";
-	ctx.textAlign = "center";
-	ctx.fillText("Level up!", 300, 250);
-
-	ctx.font = "60px Arial";
-	ctx.textAlign = "center";
-	ctx.fillText("2", 300, 320);
-}
-
-function levelUpScreen3(){
-	clearCanvas();
-	drawPlayer();
-	drawEnemies();
-	
-	ctx.beginPath();
-	ctx.rect(100, 170, 400, 200);
-	ctx.stroke();
-	ctx.fillStyle = "lightgray";
-	ctx.fill();
-
-	ctx.fillStyle = "black";
-	ctx.font = "60px Arial";
-	ctx.textAlign = "center";
-	ctx.fillText("Level up!", 300, 250);
-
-	ctx.font = "60px Arial";
-	ctx.textAlign = "center";
-	ctx.fillText("1", 300, 320);
-}
-
 function levelUp(){
 	gameActive = true;
 	enemySpeed = 1;
 	update();
 }
 
-
 var dropBombEachSecond = setInterval(dropBomb, 1000);
-
-
-
 
 // START
 drawPlayer();
