@@ -22,8 +22,8 @@ var missileRadius = 5;
 var missileSpeed = 10;
 var bombRadius = 5;
 var bombSpeed = 10;
-var enemySpeed = 1;
 
+var enemySpeed = 1;
 var lives = 3;
 var score = 0;
 var level = 1;
@@ -106,8 +106,7 @@ function loseLife(){
 	}
 	else{
 		document.getElementById('lives').innerHTML = "Lives: 0";
-		gameActive = false;
-		alert("Game over.");
+		gameOver();
 	}
 }
 
@@ -169,6 +168,10 @@ function keyDown(e){
 			fireMissile();
 		}
 	}
+	else if (e.keyCode == 13){
+		e.preventDefault();
+		startGame();
+	}
 	else if (e.key =='ArrowUp' || e.key == 'Up' || e.key =='ArrowDown' || e.key == 'Down'){
 		e.preventDefault();
 	}
@@ -204,8 +207,7 @@ function dropBomb(){
 function checkGameOver(){
 	enemies.forEach(enemy => {
 		if (enemy[1] + enemy[3] >= 780 && enemy[4] == true){
-			gameActive = false;
-			alert("Game over!");
+			gameOver();
 		}
 	});
 }
@@ -249,12 +251,28 @@ function update(){
 }
 
 function updateScore(points){
-	score += points;
+	if (points > 0){
+		score += points;
+	}
+	else {
+		score = 0;
+	}
 	document.getElementById('score').innerHTML = "Score: " + score	.toString();
 }
 
 function startGame(){
+	enemySpeed = 1;
+	lives = 3;
+	level = 1;
+	playerExplosionRadius = 51
+	enemyExplosionRadius = 31;
+	enemyExplosions = [];
+	playerExplosion = [];
+	missiles = []
+	bombs = []
+	enemies = resetEnemies();
 	gameActive = true;
+	updateScore(0);
 	update();
 }
 
@@ -284,6 +302,11 @@ function checkLevelUp(){
 function levelUp(){
 	gameActive = true;
 	update();
+}
+
+function gameOver(){
+	gameActive = false;
+	drawGameOverScreen();
 }
 
 var dropBombEachSecond = setInterval(dropBomb, 1000);
