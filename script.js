@@ -2,6 +2,9 @@ var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext("2d");
 const playerImage = document.getElementById("player");
 const enemy1Image = document.getElementById("enemy1");
+const enemy2Image = document.getElementById("enemy2");
+const enemy3Image = document.getElementById("enemy3");
+const enemy4Image = document.getElementById("enemy4");
 
 const player = {
 	w: 80,
@@ -277,14 +280,11 @@ function checkLevelUp(){
 }
 
 function levelUp(){
-
-
 	gameActive = true;
-
 	update();
 }
 
-//var dropBombEachSecond = setInterval(dropBomb, 1000);
+var dropBombEachSecond = setInterval(dropBomb, 1000);
 
 // START
 drawPlayer();

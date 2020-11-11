@@ -7,9 +7,45 @@ function drawPlayer(){
 }
 
 function drawEnemies(){
+
+	/*
+	if (enemyAnimationBool == true){
+		var currentEnemyFrame = enemy1Image;
+	}
+	else {
+		var currentEnemyFrame = enemy2Image;
+	}
+	*/
+
 	enemies.forEach(x => {
+
+		if (x[6] == 3){
+			if (enemyAnimationBool == true){
+				var currentEnemyFrame = enemy1Image;
+			}
+			else {
+				var currentEnemyFrame = enemy2Image;
+			}
+		}
+		else if (x[6] == 2){
+			if (enemyAnimationBool == true){
+				var currentEnemyFrame = enemy1Image;
+			}
+			else {
+				var currentEnemyFrame = enemy2Image;
+			}
+		}
+		else if (x[6] == 1){
+			if (enemyAnimationBool == true){
+				var currentEnemyFrame = enemy3Image;
+			}
+			else {
+				var currentEnemyFrame = enemy4Image;
+			}
+		}
+
 		if (x[4] == true){
-			ctx.drawImage(enemy1Image, x[0], x[1], x[2], x[3]);
+			ctx.drawImage(currentEnemyFrame, x[0], x[1], x[2], x[3]);
 		}
 	});
 }
@@ -60,3 +96,10 @@ function drawEnemyExplosions(){
 		}
 	});
 }
+
+var enemyAnimationBool = true;
+function switchEnemyImage(){
+	enemyAnimationBool = !enemyAnimationBool;
+}
+
+var enemyAnimation = setInterval(switchEnemyImage, 250);
