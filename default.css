@@ -27,6 +27,6 @@ canvas {
 	width: 900;
 }
 
-#player, #enemy1, #enemy2, #enemy3, #enemy4 {
+#player, #enemy1_1, #enemy1_2, #enemy2_1, #enemy2_2, #enemy3_1, #enemy3_2 {
 	display: none;
 }

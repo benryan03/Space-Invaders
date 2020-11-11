@@ -1,10 +1,12 @@
 var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext("2d");
 const playerImage = document.getElementById("player");
-const enemy1Image = document.getElementById("enemy1");
-const enemy2Image = document.getElementById("enemy2");
-const enemy3Image = document.getElementById("enemy3");
-const enemy4Image = document.getElementById("enemy4");
+const enemy1_1 = document.getElementById("enemy1_1");
+const enemy1_2 = document.getElementById("enemy1_2");
+const enemy2_1 = document.getElementById("enemy2_1");
+const enemy2_2 = document.getElementById("enemy2_2");
+const enemy3_1 = document.getElementById("enemy3_1");
+const enemy3_2 = document.getElementById("enemy3_2");
 
 const player = {
 	w: 80,

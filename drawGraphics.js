@@ -19,28 +19,28 @@ function drawEnemies(){
 
 	enemies.forEach(x => {
 
-		if (x[6] == 3){
+		if (x[6] == 1){
 			if (enemyAnimationBool == true){
-				var currentEnemyFrame = enemy1Image;
+				var currentEnemyFrame = enemy1_1;
 			}
 			else {
-				var currentEnemyFrame = enemy2Image;
+				var currentEnemyFrame = enemy1_2;
 			}
 		}
 		else if (x[6] == 2){
 			if (enemyAnimationBool == true){
-				var currentEnemyFrame = enemy1Image;
+				var currentEnemyFrame = enemy2_1;
 			}
 			else {
-				var currentEnemyFrame = enemy2Image;
+				var currentEnemyFrame = enemy2_2;
 			}
 		}
-		else if (x[6] == 1){
+		else if (x[6] == 3){
 			if (enemyAnimationBool == true){
-				var currentEnemyFrame = enemy3Image;
+				var currentEnemyFrame = enemy3_1;
 			}
 			else {
-				var currentEnemyFrame = enemy4Image;
+				var currentEnemyFrame = enemy3_2;
 			}
 		}
 
