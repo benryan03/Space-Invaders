@@ -8,44 +8,32 @@ function drawPlayer(){
 
 function drawEnemies(){
 
-	/*
-	if (enemyAnimationBool == true){
-		var currentEnemyFrame = enemy1Image;
-	}
-	else {
-		var currentEnemyFrame = enemy2Image;
-	}
-	*/
-
 	enemies.forEach(x => {
 
-		if (x[6] == 1){
-			if (enemyAnimationBool == true){
-				var currentEnemyFrame = enemy1_1;
-			}
-			else {
-				var currentEnemyFrame = enemy1_2;
-			}
+		var enemyType = x[6];
+		var enemyVisible = x[4];
+
+		if (enemyType == 1 && enemyAnimBool == true){
+			var enemyImg = enemy1_1;
 		}
-		else if (x[6] == 2){
-			if (enemyAnimationBool == true){
-				var currentEnemyFrame = enemy2_1;
-			}
-			else {
-				var currentEnemyFrame = enemy2_2;
-			}
+		else if (enemyType == 1 && enemyAnimBool == false){
+			var enemyImg = enemy1_2;
 		}
-		else if (x[6] == 3){
-			if (enemyAnimationBool == true){
-				var currentEnemyFrame = enemy3_1;
-			}
-			else {
-				var currentEnemyFrame = enemy3_2;
-			}
+		if (enemyType == 2 && enemyAnimBool == true){
+			var enemyImg = enemy2_1;
+		}
+		else if (enemyType == 2 && enemyAnimBool == false){
+			var enemyImg = enemy2_2;
+		}
+		if (enemyType == 3 && enemyAnimBool == true){
+			var enemyImg = enemy3_1;
+		}
+		else if (enemyType == 3 && enemyAnimBool == false){
+			var enemyImg = enemy3_2;
 		}
 
-		if (x[4] == true){
-			ctx.drawImage(currentEnemyFrame, x[0], x[1], x[2], x[3]);
+		if (enemyVisible == true){
+			ctx.drawImage(enemyImg, x[0], x[1], x[2], x[3]);
 		}
 	});
 }
@@ -97,9 +85,8 @@ function drawEnemyExplosions(){
 	});
 }
 
-var enemyAnimationBool = true;
-function switchEnemyImage(){
-	enemyAnimationBool = !enemyAnimationBool;
-}
-
+var enemyAnimBool = true;
 var enemyAnimation = setInterval(switchEnemyImage, 250);
+function switchEnemyImage(){
+	enemyAnimBool = !enemyAnimBool;
+}
